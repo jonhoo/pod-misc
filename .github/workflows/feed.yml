@@ -74,6 +74,7 @@ jobs:
           fi
         done
   feed:
+    # fails for now due to https://github.com/w3c/feedvalidator/issues/116
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
