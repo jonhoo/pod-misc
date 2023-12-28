@@ -11,7 +11,7 @@ jobs:
   episode:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Dates are valid
       run: |
         pip install pytz ciso8601
@@ -63,7 +63,7 @@ jobs:
   transcript:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Transcripts match episodes
       run: |
         for transcript in _transcripts/*/*.md; do
@@ -76,7 +76,7 @@ jobs:
   feed:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3'
