@@ -48,7 +48,7 @@ permalink: "/podcast.rss"
 			{% if post.guid %}
 			<guid isPermaLink="false">{{ post.guid }}</guid>
 			{% else %}
-			<guid isPermaLink="false">jonhoo-pod-{{ post.url }}</guid>
+			<guid isPermaLink="false">jonhoo-pod-{{ post.categories }}-{{ post.slug }}</guid>
 			{% endif %}
 
 			<title><![CDATA[ {{ post.title }} ]]></title>

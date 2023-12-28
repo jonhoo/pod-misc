@@ -18,10 +18,10 @@ exclude:
 collections:
   episodes:
     output: true
-    permalink: /episode/:title/
+    permalink: /episode/:categories/:title/
   transcripts:
     output: true
-    permalink: /transcript/:title/
+    permalink: /transcript/:categories/:title/
 
 # https://github.com/jekyll/jekyll/issues/7744
 defaults:
