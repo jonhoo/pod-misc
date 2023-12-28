@@ -53,8 +53,18 @@ permalink: "/podcast.rss"
 
 			<title><![CDATA[ {{ post.title }} ]]></title>
 			<itunes:summary><![CDATA[ {{ post.excerpt | strip_html }} ]]></itunes:summary>
-			<description><![CDATA[ {{ post.content | strip_html }} ]]></description>
-			<content:encoded><![CDATA[ {{ post.content }} ]]></content:encoded>
+			<description><![CDATA[
+				{% if post.youtube %}
+				Also available on YouTube at {{ post.youtube }}.
+				{% endif %}
+				{{ post.content | strip_html }}
+			]]></description>
+			<content:encoded><![CDATA[
+				{% if post.youtube %}
+					<p>Also available as a <a href="{{ post.youtube }}">video on YouTube</a>.
+				{% endif %}
+				{{ post.content }}
+			]]></content:encoded>
 
 			<enclosure url="https://dts.podtrac.com/redirect.mp3/{{ post.file | replace_first: "https://", "" }}" length="{{ post.length }}" type="audio/mpeg"/>
 			<itunes:duration>{{ post.duration }}</itunes:duration>
