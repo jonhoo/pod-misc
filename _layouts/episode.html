@@ -8,6 +8,9 @@ layout: default
 	{%- if page.reddit -%}
 	<span class="detail"><a href="{{ page.reddit }}">Discussion on Reddit</a></span>
 	{%- endif -%}
+	{%- if page.youtube -%}
+	<span class="detail"><a href="{{ page.youtube }}">Video on YouTube</a></span>
+	{%- endif -%}
 
 	{%- assign transcript = site.transcripts | where:"episode",page.path | first -%}
 	{%- if transcript -%}
@@ -19,7 +22,8 @@ layout: default
 	</div>
 
 	<!--
-	<span class="detail"><a href="{{ site.github.repository_url }}/blob/master/{{ page.path }}">View raw episode metadata</a></span>
+	<span class="detail"><a href="https://github.com/{{ site.repository }}/commits/main/{{page.path}}">View raw episode metadata</a></span>
+	<span class="detail"><a href="https://github.com/{{ site.repository }}/blob/main/{{ page.path }}">View raw episode metadata</a></span>
 	-->
 </article>
 <script>

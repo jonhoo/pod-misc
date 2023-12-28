@@ -1,9 +1,9 @@
-name: Jekyll site CI
+name: Podcast feed hygiene
 
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [opened, synchronize]
 
@@ -79,7 +79,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '2.7'
+        ruby-version: '3'
         bundler-cache: true
     - name: Install dependencies
       run: bundle install
@@ -87,7 +87,7 @@ jobs:
       run: |
         # have site.url produce a valid value
         sed -i -e '/^collections:/i \
-        url: https://rustacean-station.org' \
+        url: https://pod.jonhoo.eu/misc' \
                _config.yml
         bundle exec jekyll build
     - name: Grab feed validator
@@ -106,7 +106,7 @@ jobs:
         sed -i -e 's/https:/http:/g' \
                -e '/rel="self"/ s@href="[^"]*"@href="file://'"$(pwd)"'/validate.rss"@' \
                -e '/xmlns:content/a \
-                    xml:base="https://rustacean-station.org"' \
+                    xml:base="https://pod.jonhoo.eu/misc"' \
                validate.rss
         cd feedvalidator
         pip install -r requirements.txt

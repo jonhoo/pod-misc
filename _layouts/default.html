@@ -14,16 +14,16 @@
 	<body>
 		<h1>
 		<a href="/">
-			The {{ site.title | default: site.github.repository_name }} Podcast
+			{{ site.title }} Podcast
 			<br>
 			<img
 			 srcset="
-			  /images/artwork.jpg 3000w,
-			  /images/artwork-2x.jpg 1500w,
-			  /images/artwork-4x.jpg 750w,
-			  /images/artwork.small.jpg 400w
+			  /images/artwork.jpg 800w,
+			  /images/artwork-high.jpg 640w,
+			  /images/artwork-medium.jpg 512w,
+			  /images/artwork-small.jpg 400w
 			 "
-			 src="/images/artwork-4x.jpg"
+			 src="/images/artwork-high.jpg"
 			/>
 		</a>
 		</h1>
@@ -36,7 +36,7 @@
 		<div id="wrapper">
 			{{ content }}
 			<footer>
-				<p><a href="{{ site.github.repository_url }}">View {{ site.github.repository_nwo }} on GitHub</a></p>
+				<p><a href="https://github.com/{{ site.repository }}/">View the source for this site on GitHub</a></p>
 				<p>Icons by <a href="https://simpleicons.org/">Simple Icons</a>
 			</footer>
 		</div>
