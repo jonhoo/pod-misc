@@ -9,6 +9,7 @@ kramdown:
   input: GFM
   hard_wrap: false
 repository: jonhoo/pod-misc
+url: https://pod.jonhoo.eu
 
 exclude:
   - 000-template.md

@@ -85,10 +85,6 @@ jobs:
       run: bundle install
     - name: Build site and feed
       run: |
-        # have site.url produce a valid value
-        sed -i -e '/^collections:/i \
-        url: https://pod.jonhoo.eu/misc' \
-               _config.yml
         bundle exec jekyll build
     - name: Grab feed validator
       run: |
