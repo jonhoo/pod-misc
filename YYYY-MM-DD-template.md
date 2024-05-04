@@ -5,6 +5,7 @@ file: https://audio.jonhoo.eu/file/audio-jonhoo-eu/filename.mp3
 duration: (fill in with audio length, "HH:MM:SS", e.g. "43:21")
 length: (fill in with audio size in bytes, e.g. "12345678", this is a string)
 #youtube: (link to YouTube video corresponding to this episode)
+category: qna
 ---
 
 ### Timestamps
