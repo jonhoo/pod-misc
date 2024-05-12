@@ -22,18 +22,36 @@ jobs:
             exit 1
           fi
         done
-    - name: File size specifications are correct
+    - name: No smart symbols
       run: |
         for episode in _episodes/*/*.md; do
-          length=$(grep 'length:' "$episode" | head -n1 | awk '{print $2}' | sed 's/"//g')
-          file=$(grep 'file:' "$episode" | head -n1 | sed -e 's/^file: //' -e 's/"//g')
-          size=$(curl --head -f -s "$file" | grep content-length | awk '{print $2}' | sed 's/\r//')
-          if [ -z $size ]; then
-            echo "couldn't get content length of \"$file\""
+          # this isn't a normal dash, and doesn't get turned into a list
+          if grep -qF '⁃' "$episode"; then
+            echo "$(basename "$episode"): abnormal dash won't make a list"
             exit 1
           fi
-          if [ $size -ne $length ]; then
-            echo "$(basename "$episode"): ${length}b (reported) != ${size}b (actual)"
+          if grep -P '[“‘’”]' "$episode"; then
+            echo "$(basename "$episode"): found smart quotes"
+            exit 1
+          fi
+        done
+    - name: Timecode lists are correctly formatted
+      run: |
+        for episode in _episodes/*/*.md; do
+          # timecodes should never start a line (should be in header or list)
+          if grep -qP '^\[@' "$episode"; then
+            echo "$(basename "$episode"): timecode not in list or header"
+            exit 1
+          fi
+          # timecode listings need to not have empty lines, or we'll get
+          #
+          #   <li><p>[@HH:MM:SS]
+          #
+          # which doesn't render right. it happens to work for timecode
+          # listings that have sub-listings, but easiest to check that there
+          # just aren't any gaps.
+          if ! awk '/^\s*$/ { empty = 1; next; } /^\s*-\s*\[@[0-9]/ { if (in_list == 1 && empty == 1) { exit 1; } else { in_list = 1; empty = 0; next; } } /^\s*-/ { empty = 0; next; } { in_list = 0; empty = 0; }' "$episode"; then
+            echo "$(basename "$episode"): empty lines between list items"
             exit 1
           fi
         done
@@ -57,6 +75,36 @@ jobs:
           files=(_episodes/*/????-??-??-$slug)
           if [[ "${#files[@]}" -gt 1 ]]; then
             echo "Duplicate slugs found: ${files[*]}"
+            exit 1
+          fi
+        done
+    - name: Get all changed episode files
+      id: changed-markdown-files
+      uses: tj-actions/changed-files@v44
+      with:
+        # Avoid using single or double quotes for multiline patterns
+        files: |
+           _episodes/*/*.md
+    - name: File size specifications are correct
+      # note: we only guard this one since it's slow to download all the
+      # episode files; the others are fine to run for all files since they run
+      # locally.
+      if: steps.changed-markdown-files.outputs.any_changed == 'true'
+      env:
+        ALL_CHANGED_FILES: ${{ steps.changed-markdown-files.outputs.all_changed_files }}
+      run: |
+        for episode in ${ALL_CHANGED_FILES}; do
+          # skip deleted episodes (if any)
+          [ -e "$episode" ] || continue;
+          length=$(grep 'length:' "$episode" | head -n1 | awk '{print $2}' | sed 's/"//g')
+          file=$(grep 'file:' "$episode" | head -n1 | sed -e 's/^file: //' -e 's/"//g')
+          size=$(curl --head -f -s "$file" | grep content-length | awk '{print $2}' | sed 's/\r//')
+          if [ -z $size ]; then
+            echo "couldn't get content length of \"$file\""
+            exit 1
+          fi
+          if [ $size -ne $length ]; then
+            echo "$(basename "$episode"): ${length}b (reported) != ${size}b (actual)"
             exit 1
           fi
         done
