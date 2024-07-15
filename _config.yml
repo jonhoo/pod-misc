@@ -15,6 +15,10 @@ exclude:
   - 000-template.md
   - vendor
   - audio
+# can't use pages/_headers since Jekyll ignores _* files
+# https://talk.jekyllrb.com/t/include-all-files-in-a-specific-directory-even-if-the-filenames-start-with-underscores/5849
+include:
+  - _headers
 collections:
   episodes:
     output: true
