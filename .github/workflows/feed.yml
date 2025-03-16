@@ -80,7 +80,7 @@ jobs:
         done
     - name: Get all changed episode files
       id: changed-markdown-files
-      uses: tj-actions/changed-files@v44
+      uses: step-security/changed-files@v45
       with:
         # Avoid using single or double quotes for multiline patterns
         files: |
